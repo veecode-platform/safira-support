@@ -1,10 +1,13 @@
 #!/bin/bash
 # Download Versions of the following software:
-OPENAPI_GENERATOR_VERSION="5.4.0"
-GOOGLE_JAVA_FORMAT_VERSION="1.15.0"
-INSOMNIA_INSO_VERSION="2.4.1"
-OKTETO_VERSION="1.14.10"
-KUBECTL_VERSION="1.23.3"
+
+VERIONS_PATH="https://vfipaas.github.io/safira-support/versions"
+OPENAPI_GENERATOR_VERSION=$(curl ${VERIONS_PATH}/openapi-codegen.txt -L -s)
+GOOGLE_JAVA_FORMAT_VERSION=$(curl ${VERIONS_PATH}/google-java-format.txt -L -s)
+INSOMNIA_INSO_VERSION=$(curl ${VERIONS_PATH}/inso.txt -L -s)
+OKTETO_VERSION=$(curl ${VERIONS_PATH}/okteto.txt -L -s)
+KUBECTL_VERSION=$(curl ${VERIONS_PATH}/kubectl.txt -L -s)
+SAFIRA_CLI_VERSION=$(curl ${VERIONS_PATH}/safira-cli.txt -L -s)
 
 SAFIRA_BIN_FOLDER=${HOME}/.safira/bin
 
@@ -27,27 +30,33 @@ function getArchitecture(){
 
 function downloadOpenapiGenerator(){
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/openapi-generator-cli/${OPENAPI_GENERATOR_VERSION}
+    declare BIN_FILE="${DESTINY_FOLDER}/openapi-generator-cli"
+    [[ -f "$BIN_FILE" ]]&&return;
     mkdir -p ${DESTINY_FOLDER}
     if  command -v mvn &> /dev/null;then
         mvn -q org.apache.maven.plugins:maven-dependency-plugin:2.9:get \
         -Dartifact=org.openapitools:openapi-generator-cli:${OPENAPI_GENERATOR_VERSION} \
         -Dtransitive=false \
-        -Ddest="${DESTINY_FOLDER}/openapi-generator-cli"
+        -Ddest=${BIN_FILE}
     else
-        curl -sL "https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${OPENAPI_GENERATOR_VERSION}/openapi-generator-cli-${OPENAPI_GENERATOR_VERSION}.jar" --output ${DESTINY_FOLDER}/openapi-generator-cli
+        curl -L "https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${OPENAPI_GENERATOR_VERSION}/openapi-generator-cli-${OPENAPI_GENERATOR_VERSION}.jar" --output ${BIN_FILE}
     fi
 }
 
 #https://github.com/google/google-java-format/releases/download/v${GOOGLE_JAVA_FORMAT_VERSION}/google-java-format-${GOOGLE_JAVA_FORMAT_VERSION}-all-deps.jar
 function downloadGoogleJavaFormat() {
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/google-java-format/${GOOGLE_JAVA_FORMAT_VERSION}
+    declare BIN_FILE="${DESTINY_FOLDER}/google-java-format"
+    [[ -f "$BIN_FILE" ]]&&return;
     mkdir -p ${DESTINY_FOLDER}
-    curl -sL "https://github.com/google/google-java-format/releases/download/v${GOOGLE_JAVA_FORMAT_VERSION}/google-java-format-${GOOGLE_JAVA_FORMAT_VERSION}-all-deps.jar" --output ${DESTINY_FOLDER}/google-java-format
+    curl -sL "https://github.com/google/google-java-format/releases/download/v${GOOGLE_JAVA_FORMAT_VERSION}/google-java-format-${GOOGLE_JAVA_FORMAT_VERSION}-all-deps.jar" --output ${BIN_FILE}
 
 }
 
 function downloadInsomniaInso(){
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/inso/${INSOMNIA_INSO_VERSION}
+    declare BIN_FILE="${DESTINY_FOLDER}/inso"
+    [[ -f "$BIN_FILE" ]]&&return;
     mkdir -p ${DESTINY_FOLDER}
     FILE_NAME="inso-${SAFIRA_OS}-${INSOMNIA_INSO_VERSION}"
 
@@ -65,7 +74,7 @@ function downloadInsomniaInso(){
         elif [ "${SAFIRA_OS}" = "darwin" ]; then
         unzip -qq ${DESTINY_FOLDER}/${COMPRESSED_FILE} -d ${DESTINY_FOLDER}
     fi
-    chmod +x ${DESTINY_FOLDER}/inso
+    chmod +x ${BIN_FILE}
     rm "${DESTINY_FOLDER}/${COMPRESSED_FILE}"
 }
 
@@ -75,12 +84,14 @@ function downloadInsomniaInso(){
 # https://github.com/okteto/okteto/releases/download/2.4.0/okteto-Linux-x86_64
 function downloadOkteto(){
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/okteto/${OKTETO_VERSION}
+    declare BIN_FILE="${DESTINY_FOLDER}/okteto"
+    [[ -f "$BIN_FILE" ]]&&return;
     mkdir -p ${DESTINY_FOLDER}
     FILE_NAME=$(echo "okteto-${SAFIRA_OS^}-${SAFIRA_ARCHITECTURE}")
 
     DOWNLOAD_URL="https://github.com/okteto/okteto/releases/download/${OKTETO_VERSION}/${FILE_NAME}"
-    curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/okteto
-    chmod +x ${DESTINY_FOLDER}/okteto
+    curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
+    chmod +x ${BIN_FILE}
 }
 
 # curl -LO "https://dl.k8s.io/release/v1.23.3/bin/darwin/amd64/kubectl"
@@ -88,8 +99,10 @@ function downloadOkteto(){
 # curl -LO "https://dl.k8s.io/release/v1.23.3/bin/linux/amd64/kubectl"
 function downloadKubectl(){
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/kubectl/${KUBECTL_VERSION}
+    declare BIN_FILE="${DESTINY_FOLDER}/kubectl"
+    [[ -f "$BIN_FILE" ]]&&return;
     mkdir -p ${DESTINY_FOLDER}
-    FILE_NAME="kubectl"
+    # FILE_NAME="kubectl"
 
     if [ "${SAFIRA_ARCHITECTURE}" = "x86_64" ]; then
         ARCHITECTURE="amd64"
@@ -98,8 +111,8 @@ function downloadKubectl(){
     fi
 
     DOWNLOAD_URL="https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/${SAFIRA_OS}/${ARCHITECTURE}/kubectl"
-    curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/${FILE_NAME}
-    chmod +x ${DESTINY_FOLDER}/${FILE_NAME}
+    curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
+    chmod +x ${BIN_FILE}
 }
 # https://github.com/vfipaas/safira-cli/releases/download/0.6.0/safira-cli-linux-arm64.tar.gz
 # https://github.com/vfipaas/safira-cli/releases/download/0.6.0/safira-cli-linux-x64.tar.gz
@@ -123,7 +136,7 @@ function downloadSafira(){
         COMPRESSED_FILE="${FILE_NAME}.zip"
     fi
 
-    DOWNLOAD_URL="https://github.com/vfipaas/safira-support/releases/download/0.6.0/${COMPRESSED_FILE}"
+    DOWNLOAD_URL="https://github.com/vfipaas/safira-support/releases/download/${SAFIRA_CLI_VERSION}/${COMPRESSED_FILE}"
 
     sudo curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     if [ "${SAFIRA_OS}" = "linux" ]; then
@@ -136,17 +149,17 @@ function downloadSafira(){
 }
 
 function downloadAll() {
-    echo "Downloading Dependencies 1/5"
+    echo "Installing Dependencies 1/5"
     downloadOpenapiGenerator
-    echo "Downloading Dependencies 2/5"
+    echo "Installing Dependencies 2/5"
     downloadGoogleJavaFormat
-    echo "Downloading Dependencies 3/5"
+    echo "Installing Dependencies 3/5"
     downloadInsomniaInso
-    echo "Downloading Dependencies 4/5"
+    echo "Installing Dependencies 4/5"
     downloadOkteto
-    echo "Downloading Dependencies 5/5"
+    echo "Installing Dependencies 5/5"
     downloadKubectl
-    echo "Downloading safira-cli"
+    echo "Installing safira-cli"
     downloadSafira
     echo "Installation Finished"
 }
@@ -154,3 +167,5 @@ function downloadAll() {
 getOS
 getArchitecture
 downloadAll
+# curl https://vfipaas.github.io/safira-support/install.sh -sSfL | bash
+
