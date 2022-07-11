@@ -39,7 +39,7 @@ function downloadOpenapiGenerator(){
         -Dtransitive=false \
         -Ddest=${BIN_FILE}
     else
-        curl -L "https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${OPENAPI_GENERATOR_VERSION}/openapi-generator-cli-${OPENAPI_GENERATOR_VERSION}.jar" --output ${BIN_FILE}
+        curl -sL "https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${OPENAPI_GENERATOR_VERSION}/openapi-generator-cli-${OPENAPI_GENERATOR_VERSION}.jar" --output ${BIN_FILE}
     fi
 }
 
