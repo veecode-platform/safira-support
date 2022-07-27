@@ -18,8 +18,8 @@ function getOS(){
         elif [ $(uname) = "Darwin" ]; then
         SAFIRA_OS="darwin"
     else
-        echo "Unsupported OS"
-        exit 1
+        echo "Unsupported OS $(uname)"
+        exit 2
     fi
 }
 
@@ -149,6 +149,7 @@ function downloadSafira(){
 }
 
 function downloadAll() {
+    getOS
     echo "Installing Dependencies 1/5"
     downloadOpenapiGenerator
     echo "Installing Dependencies 2/5"
