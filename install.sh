@@ -2,12 +2,12 @@
 # Download Versions of the following software:
 
 VERIONS_PATH="https://vfipaas.github.io/safira-support/versions"
-OPENAPI_GENERATOR_VERSION=$(curl ${VERIONS_PATH}/openapi-codegen.txt -L -s)
-GOOGLE_JAVA_FORMAT_VERSION=$(curl ${VERIONS_PATH}/google-java-format.txt -L -s)
-INSOMNIA_INSO_VERSION=$(curl ${VERIONS_PATH}/inso.txt -L -s)
-OKTETO_VERSION=$(curl ${VERIONS_PATH}/okteto.txt -L -s)
-KUBECTL_VERSION=$(curl ${VERIONS_PATH}/kubectl.txt -L -s)
-SAFIRA_CLI_VERSION=$(curl ${VERIONS_PATH}/safira-cli.txt -L -s)
+OPENAPI_GENERATOR_VERSION=$(curl ${VERIONS_PATH}/openapi-codegen -L -s)
+GOOGLE_JAVA_FORMAT_VERSION=$(curl ${VERIONS_PATH}/google-java-format -L -s)
+INSOMNIA_INSO_VERSION=$(curl ${VERIONS_PATH}/inso -L -s)
+OKTETO_VERSION=$(curl ${VERIONS_PATH}/okteto -L -s)
+KUBECTL_VERSION=$(curl ${VERIONS_PATH}/kubectl -L -s)
+SAFIRA_CLI_VERSION=$(curl ${VERIONS_PATH}/safira-cli -L -s)
 
 SAFIRA_BIN_FOLDER=${HOME}/.safira/bin
 
