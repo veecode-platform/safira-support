@@ -58,14 +58,15 @@ function downloadInsomniaInso(){
     declare BIN_FILE="${DESTINY_FOLDER}/inso"
     [[ -f "$BIN_FILE" ]]&&return;
     mkdir -p ${DESTINY_FOLDER}
-    FILE_NAME="inso-${SAFIRA_OS}-${INSOMNIA_INSO_VERSION}"
+    FILE_NAME="inso"
 
     if [ "${SAFIRA_OS}" = "linux" ]; then
+        FILE_NAME="${FILE_NAME}-${SAFIRA_OS}-${INSOMNIA_INSO_VERSION}"
         COMPRESSED_FILE="${FILE_NAME}.tar.xz"
         elif [ "${SAFIRA_OS}" = "darwin" ]; then
+        FILE_NAME="${FILE_NAME}-macos-${INSOMNIA_INSO_VERSION}"
         COMPRESSED_FILE="${FILE_NAME}.zip"
     fi
-
     DOWNLOAD_URL="https://github.com/Kong/insomnia/releases/download/lib@${INSOMNIA_INSO_VERSION}/${COMPRESSED_FILE}"
     curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/${COMPRESSED_FILE}
 
@@ -168,5 +169,3 @@ function downloadAll() {
 getOS
 getArchitecture
 downloadAll
-# curl https://vfipaas.github.io/safira-support/install.sh -sSfL | bash
-
