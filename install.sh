@@ -147,6 +147,8 @@ function downloadSafira(){
     fi
     sudo rm ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     sudo chmod +x ${DESTINY_FOLDER}/safira-cli
+    #Update CLI autocomplete CACHE
+    ${DESTINY_FOLDER}/safira-cli autocomplete --refresh-cache
 }
 
 function downloadAll() {
