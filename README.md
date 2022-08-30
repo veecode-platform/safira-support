@@ -1,6 +1,6 @@
 # VeeCode Platform
 
-**👋 Welcome to your Communite Support! 👋**
+**👋 Welcome to your Community Support! 👋**
 
 We’re using [Github Discussions](https://github.com/vfipaas/safira-support/discussions) as a place to answer questions and share the knowledge of our community. We hope that you:
 
