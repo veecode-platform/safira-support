@@ -1,7 +1,7 @@
 #!/bin/bash
 # Download Versions of the following software:
 
-VERIONS_PATH="https://vfipaas.github.io/safira-support/versions"
+VERIONS_PATH="https://veecode-platform.github.io/safira-support/versions"
 OPENAPI_GENERATOR_VERSION=$(curl ${VERIONS_PATH}/openapi-codegen -L -s)
 GOOGLE_JAVA_FORMAT_VERSION=$(curl ${VERIONS_PATH}/google-java-format -L -s)
 INSOMNIA_INSO_VERSION=$(curl ${VERIONS_PATH}/inso -L -s)
@@ -115,10 +115,10 @@ function downloadKubectl(){
     curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
     chmod +x ${BIN_FILE}
 }
-# https://github.com/vfipaas/safira-cli/releases/download/0.6.0/safira-cli-linux-arm64.tar.gz
-# https://github.com/vfipaas/safira-cli/releases/download/0.6.0/safira-cli-linux-x64.tar.gz
-# https://github.com/vfipaas/safira-cli/releases/download/0.6.0/safira-cli-macos-arm64.zip
-# https://github.com/vfipaas/safira-cli/releases/download/0.6.0/safira-cli-macos-x64.zip
+# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-linux-arm64.tar.gz
+# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-linux-x64.tar.gz
+# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-macos-arm64.zip
+# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-macos-x64.zip
 function downloadSafira(){
     declare DESTINY_FOLDER=/usr/local/bin
     FILE_NAME="safira-cli"
@@ -137,7 +137,7 @@ function downloadSafira(){
         COMPRESSED_FILE="${FILE_NAME}.zip"
     fi
 
-    DOWNLOAD_URL="https://github.com/vfipaas/safira-support/releases/download/${SAFIRA_CLI_VERSION}/${COMPRESSED_FILE}"
+    DOWNLOAD_URL="https://github.com/veecode-platform/safira-support/releases/download/${SAFIRA_CLI_VERSION}/${COMPRESSED_FILE}"
 
     sudo curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     if [ "${SAFIRA_OS}" = "linux" ]; then
