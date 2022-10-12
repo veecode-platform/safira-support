@@ -11,19 +11,14 @@ KUBECTL_VERSION=$(cat ./src/properties.json | jq -r  '.kubectl.version')
 SAFIRA_BIN_FOLDER=${HOME}/.safira/bin
 
 function getOS(){
-    declare RESPONSE
-    if [ $(uname) = "Linux" ]; then
-        SAFIRA_OS="linux"
-        elif [ $(uname) = "Darwin" ]; then
-        SAFIRA_OS="darwin"
-    else
-        echo "Unsupported OS $(uname)"
-        exit 2
-    fi
+    SAFIRA_OS=$(uname)
+    if [[ "${SAFIRA_OS}" != @(Linux|Darwin) ]];then echo "Unsupported OS ${SAFIRA_OS}";exit 2;fi
+    SAFIRA_OS="${SAFIRA_OS,,}"
 }
 
 function getArchitecture(){
     SAFIRA_ARCHITECTURE=`uname -m`
+    if [[ $SAFIRA_ARCHITECTURE = @(aarch64|aarch64_be|armv8b|armv8l) ]];then SAFIRA_ARCHITECTURE="arm64";fi
 }
 
 function downloadOpenapiGenerator(){

@@ -1,6 +1,6 @@
 #!/bin/bash
-# Download Versions of the following software:
 
+# Download Versions of the following software:
 VERIONS_PATH="https://veecode-platform.github.io/safira-support/versions"
 OPENAPI_GENERATOR_VERSION=$(curl ${VERIONS_PATH}/openapi-codegen -L -s)
 GOOGLE_JAVA_FORMAT_VERSION=$(curl ${VERIONS_PATH}/google-java-format -L -s)
@@ -12,20 +12,14 @@ SAFIRA_CLI_VERSION=$(curl ${VERIONS_PATH}/safira-cli -L -s)
 SAFIRA_BIN_FOLDER=${HOME}/.safira/bin
 
 function getOS(){
-    declare RESPONSE
-    if [ $(uname) = "Linux" ]; then
-        SAFIRA_OS="linux"
-        elif [ $(uname) = "Darwin" ]; then
-        SAFIRA_OS="darwin"
-    else
-        echo "Unsupported OS $(uname)"
-        exit 2
-    fi
+    SAFIRA_OS=$(uname)
+    if [[ "${SAFIRA_OS}" != @(Linux|Darwin) ]];then echo "Unsupported OS ${SAFIRA_OS}";exit 2;fi
+    SAFIRA_OS="${SAFIRA_OS,,}"
 }
 
-# x86_64, i686, arm, or aarch64
 function getArchitecture(){
     SAFIRA_ARCHITECTURE=`uname -m`
+    if [[ $SAFIRA_ARCHITECTURE = @(aarch64|aarch64_be|armv8b|armv8l) ]];then SAFIRA_ARCHITECTURE="arm64";fi
 }
 
 function downloadOpenapiGenerator(){
@@ -43,7 +37,6 @@ function downloadOpenapiGenerator(){
     fi
 }
 
-#https://github.com/google/google-java-format/releases/download/v${GOOGLE_JAVA_FORMAT_VERSION}/google-java-format-${GOOGLE_JAVA_FORMAT_VERSION}-all-deps.jar
 function downloadGoogleJavaFormat() {
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/google-java-format/${GOOGLE_JAVA_FORMAT_VERSION}
     declare BIN_FILE="${DESTINY_FOLDER}/google-java-format"
@@ -79,10 +72,6 @@ function downloadInsomniaInso(){
     rm "${DESTINY_FOLDER}/${COMPRESSED_FILE}"
 }
 
-# https://github.com/okteto/okteto/releases/download/2.4.0/okteto-Darwin-arm64
-# https://github.com/okteto/okteto/releases/download/2.4.0/okteto-Darwin-x86_64
-# https://github.com/okteto/okteto/releases/download/2.4.0/okteto-Linux-arm64
-# https://github.com/okteto/okteto/releases/download/2.4.0/okteto-Linux-x86_64
 function downloadOkteto(){
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/okteto/${OKTETO_VERSION}
     declare BIN_FILE="${DESTINY_FOLDER}/okteto"
@@ -95,19 +84,15 @@ function downloadOkteto(){
     chmod +x ${BIN_FILE}
 }
 
-# curl -LO "https://dl.k8s.io/release/v1.23.3/bin/darwin/amd64/kubectl"
-# curl -LO "https://dl.k8s.io/release/v1.23.3/bin/darwin/arm64/kubectl"
-# curl -LO "https://dl.k8s.io/release/v1.23.3/bin/linux/amd64/kubectl"
 function downloadKubectl(){
     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/kubectl/${KUBECTL_VERSION}
     declare BIN_FILE="${DESTINY_FOLDER}/kubectl"
     [[ -f "$BIN_FILE" ]]&&return;
     mkdir -p ${DESTINY_FOLDER}
-    # FILE_NAME="kubectl"
 
     if [ "${SAFIRA_ARCHITECTURE}" = "x86_64" ]; then
         ARCHITECTURE="amd64"
-        elif [ "${SAFIRA_ARCHITECTURE}" = "arm" ]; then
+        elif [ "${SAFIRA_ARCHITECTURE}" = "arm64" ]; then
         ARCHITECTURE="arm64"
     fi
 
@@ -115,10 +100,7 @@ function downloadKubectl(){
     curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
     chmod +x ${BIN_FILE}
 }
-# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-linux-arm64.tar.gz
-# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-linux-x64.tar.gz
-# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-macos-arm64.zip
-# https://github.com/veecode-platform/safira-cli/releases/download/0.6.0/safira-cli-macos-x64.zip
+
 function downloadSafira(){
     declare DESTINY_FOLDER=/usr/local/bin
     FILE_NAME="safira-cli"
@@ -147,7 +129,6 @@ function downloadSafira(){
     fi
     sudo rm ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     sudo chmod +x ${DESTINY_FOLDER}/safira-cli
-    #Update CLI autocomplete CACHE
     ${DESTINY_FOLDER}/safira-cli autocomplete --refresh-cache
 }
 
