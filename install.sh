@@ -125,7 +125,7 @@ function downloadSafira(){
     if [ "${SAFIRA_OS}" = "linux" ]; then
         sudo tar -xf ${DESTINY_FOLDER}/${COMPRESSED_FILE} -C ${DESTINY_FOLDER}
         elif [ "${SAFIRA_OS}" = "darwin" ]; then
-        sudo unzip -qq ${DESTINY_FOLDER}/${COMPRESSED_FILE} -d ${DESTINY_FOLDER}
+        sudo unzip -oqq ${DESTINY_FOLDER}/${COMPRESSED_FILE} -d ${DESTINY_FOLDER}
     fi
     sudo rm ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     sudo chmod +x ${DESTINY_FOLDER}/safira-cli
