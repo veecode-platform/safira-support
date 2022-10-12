@@ -107,7 +107,7 @@ function downloadSafira(){
 
     if [ "${SAFIRA_ARCHITECTURE}" = "x86_64" ]; then
         ARCHITECTURE="x64"
-        elif [ "${SAFIRA_ARCHITECTURE}" = "arm" ]; then
+        elif [ "${SAFIRA_ARCHITECTURE}" = "arm64" ]; then
         ARCHITECTURE="arm64"
     fi
 
@@ -120,7 +120,7 @@ function downloadSafira(){
     fi
 
     DOWNLOAD_URL="https://github.com/veecode-platform/safira-support/releases/download/${SAFIRA_CLI_VERSION}/${COMPRESSED_FILE}"
-
+    
     sudo curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     if [ "${SAFIRA_OS}" = "linux" ]; then
         sudo tar -xf ${DESTINY_FOLDER}/${COMPRESSED_FILE} -C ${DESTINY_FOLDER}
