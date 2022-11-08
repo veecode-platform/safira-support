@@ -11,15 +11,13 @@ SAFIRA_CLI_VERSION=$(curl ${VERIONS_PATH}/safira-cli -L -s)
 
 SAFIRA_BIN_FOLDER=${HOME}/.safira/bin
 
-function getOS(){
-    SAFIRA_OS=$(uname)
-    if [[ "${SAFIRA_OS}" != @(Linux|Darwin) ]];then echo "Unsupported OS ${SAFIRA_OS}";exit 2;fi
-    SAFIRA_OS="${SAFIRA_OS,,}"
-}
-
-function getArchitecture(){
-    SAFIRA_ARCHITECTURE=`uname -m`
-    if [[ $SAFIRA_ARCHITECTURE = @(aarch64|aarch64_be|armv8b|armv8l) ]];then SAFIRA_ARCHITECTURE="arm64";fi
+function getOSAndArchitecture(){
+    SAFIRA_OS=$(uname | tr '[A-Z]' '[a-z]')
+    SAFIRA_ARCHITECTURE=$(uname -m )
+    if [[ $SAFIRA_ARCHITECTURE = "@(aarch64|aarch64_be|armv8b|armv8l)" ]];then SAFIRA_ARCHITECTURE="arm64";fi
+    if [[ "${SAFIRA_OS}" != @(linux|darwin) || ($SAFIRA_OS = 'linux' && $SAFIRA_ARCHITECTURE = 'arm64')]];then
+      echo "Sorry, unsupported Operation System ${SAFIRA_OS}-${SAFIRA_ARCHITECTURE}";exit 2;
+    fi
 }
 
 function downloadOpenapiGenerator(){
@@ -120,7 +118,7 @@ function downloadSafira(){
     fi
 
     DOWNLOAD_URL="https://github.com/veecode-platform/safira-support/releases/download/${SAFIRA_CLI_VERSION}/${COMPRESSED_FILE}"
-    
+
     sudo curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     if [ "${SAFIRA_OS}" = "linux" ]; then
         sudo tar -xf ${DESTINY_FOLDER}/${COMPRESSED_FILE} -C ${DESTINY_FOLDER}
@@ -133,7 +131,6 @@ function downloadSafira(){
 }
 
 function downloadAll() {
-    getOS
     echo "Installing Dependencies 1/5"
     downloadOpenapiGenerator
     echo "Installing Dependencies 2/5"
@@ -149,6 +146,5 @@ function downloadAll() {
     echo "Installation Finished"
 }
 
-getOS
-getArchitecture
+getOSAndArchitecture
 downloadAll
