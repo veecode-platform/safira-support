@@ -70,34 +70,34 @@ function downloadInsomniaInso(){
     rm "${DESTINY_FOLDER}/${COMPRESSED_FILE}"
 }
 
-function downloadOkteto(){
-    declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/okteto/${OKTETO_VERSION}
-    declare BIN_FILE="${DESTINY_FOLDER}/okteto"
-    [[ -f "$BIN_FILE" ]]&&return;
-    mkdir -p ${DESTINY_FOLDER}
-    FILE_NAME=$(echo "okteto-${SAFIRA_OS^}-${SAFIRA_ARCHITECTURE}")
+# function downloadOkteto(){
+#     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/okteto/${OKTETO_VERSION}
+#     declare BIN_FILE="${DESTINY_FOLDER}/okteto"
+#     [[ -f "$BIN_FILE" ]]&&return;
+#     mkdir -p ${DESTINY_FOLDER}
+#     FILE_NAME=$(echo "okteto-${SAFIRA_OS^}-${SAFIRA_ARCHITECTURE}")
 
-    DOWNLOAD_URL="https://github.com/okteto/okteto/releases/download/${OKTETO_VERSION}/${FILE_NAME}"
-    curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
-    chmod +x ${BIN_FILE}
-}
+#     DOWNLOAD_URL="https://github.com/okteto/okteto/releases/download/${OKTETO_VERSION}/${FILE_NAME}"
+#     curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
+#     chmod +x ${BIN_FILE}
+# }
 
-function downloadKubectl(){
-    declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/kubectl/${KUBECTL_VERSION}
-    declare BIN_FILE="${DESTINY_FOLDER}/kubectl"
-    [[ -f "$BIN_FILE" ]]&&return;
-    mkdir -p ${DESTINY_FOLDER}
+# function downloadKubectl(){
+#     declare DESTINY_FOLDER=${SAFIRA_BIN_FOLDER}/kubectl/${KUBECTL_VERSION}
+#     declare BIN_FILE="${DESTINY_FOLDER}/kubectl"
+#     [[ -f "$BIN_FILE" ]]&&return;
+#     mkdir -p ${DESTINY_FOLDER}
 
-    if [ "${SAFIRA_ARCHITECTURE}" = "x86_64" ]; then
-        ARCHITECTURE="amd64"
-        elif [ "${SAFIRA_ARCHITECTURE}" = "arm64" ]; then
-        ARCHITECTURE="arm64"
-    fi
+#     if [ "${SAFIRA_ARCHITECTURE}" = "x86_64" ]; then
+#         ARCHITECTURE="amd64"
+#         elif [ "${SAFIRA_ARCHITECTURE}" = "arm64" ]; then
+#         ARCHITECTURE="arm64"
+#     fi
 
-    DOWNLOAD_URL="https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/${SAFIRA_OS}/${ARCHITECTURE}/kubectl"
-    curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
-    chmod +x ${BIN_FILE}
-}
+#     DOWNLOAD_URL="https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/${SAFIRA_OS}/${ARCHITECTURE}/kubectl"
+#     curl -sL ${DOWNLOAD_URL} --output ${BIN_FILE}
+#     chmod +x ${BIN_FILE}
+# }
 
 function downloadSafira(){
     declare DESTINY_FOLDER=/usr/local/bin
@@ -131,16 +131,16 @@ function downloadSafira(){
 }
 
 function downloadAll() {
-    echo "Installing Dependencies 1/5"
+    echo "Installing Dependencies 1/4"
     downloadOpenapiGenerator
-    echo "Installing Dependencies 2/5"
+    echo "Installing Dependencies 2/4"
     downloadGoogleJavaFormat
-    echo "Installing Dependencies 3/5"
+    echo "Installing Dependencies 3/4"
     downloadInsomniaInso
-    echo "Installing Dependencies 4/5"
-    downloadOkteto
-    echo "Installing Dependencies 5/5"
-    downloadKubectl
+    echo "Installing Dependencies 4/4"
+    # downloadOkteto
+    # echo "Installing Dependencies 5/5"
+    # downloadKubectl
     echo "Installing safira-cli"
     downloadSafira
     echo "Installation Finished"
