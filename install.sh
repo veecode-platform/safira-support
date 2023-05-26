@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download Versions of the following software:
-VERIONS_PATH="https://veecode-platform.github.io/safira-support/versions"
+VERIONS_PATH="https://veecode-platform.github.io/support/versions"
 OPENAPI_GENERATOR_VERSION=$(curl ${VERIONS_PATH}/openapi-codegen -L -s)
 GOOGLE_JAVA_FORMAT_VERSION=$(curl ${VERIONS_PATH}/google-java-format -L -s)
 INSOMNIA_INSO_VERSION=$(curl ${VERIONS_PATH}/inso -L -s)
@@ -117,7 +117,7 @@ function downloadSafira(){
         COMPRESSED_FILE="${FILE_NAME}.zip"
     fi
 
-    DOWNLOAD_URL="https://github.com/veecode-platform/safira-support/releases/download/${SAFIRA_CLI_VERSION}/${COMPRESSED_FILE}"
+    DOWNLOAD_URL="https://github.com/veecode-platform/support/releases/download/${SAFIRA_CLI_VERSION}/${COMPRESSED_FILE}"
 
     sudo curl -sL ${DOWNLOAD_URL} --output ${DESTINY_FOLDER}/${COMPRESSED_FILE}
     if [ "${SAFIRA_OS}" = "linux" ]; then
