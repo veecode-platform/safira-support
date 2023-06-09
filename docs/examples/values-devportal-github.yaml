@@ -83,4 +83,4 @@ platform:
   guest:
     enabled: false
   apiManagement:
-    enabled: true
+    enabled: false
